@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Checkout</title>
+    <link rel="icon" href="./images/myntra_logo.webp">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1107.0.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <!-- Include Tailwind CSS via CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: "Montserrat", sans-serif;
+        }
+
+        main {
+            margin-left: 2%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 20px;
+        }
+
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* CSS */
+        .button-24 {
+            margin-left: 0px;
+            margin-top: 20px;
+            background: #FF4742;
+            border: 1px solid #FF4742;
+            border-radius: 6px;
+            box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-family: "Montserrat", sans-serif;
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 16px;
+            min-height: 40px;
+            outline: 0;
+            padding: 12px 14px;
+            text-align: center;
+            text-rendering: geometricprecision;
+            text-transform: none;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            vertical-align: middle;
+        }
+
+        .button-24:hover,
+        .button-24:active {
+            background-color: initial;
+            background-position: 0 0;
+            color: #FF4742;
+        }
+
+        .button-24:active {
+            opacity: .5;
+        }
+
+        h1 {
+            margin-left: 46.5%;
+        }
+
+        main {
+            padding: 2%;
+        }
+
+        /* Adjustments for navbar alignment */
+        .logo_container {
+            margin-right: 20%;
+            /* Add a 20% margin to the right */
+        }
+
+        /* Adjustments for navbar alignment */
+        .action_container {
+            display: flex;
+            align-items: center;
+        }
+
+        sup {
+            color: #FF4742;
+        }
+
+        @media screen and (max-width: 426px) {
+            #footer_column_2, #footer_column_3 {
+                display: none;
+            }
+
+            main {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin-top: 8%;
+            }
+
+            .product {
+                margin-bottom: 20px;
+            }
+        }
+
+
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .product img {
+            display: block;
+            margin: 0 auto;
+            /* Center-align the image */
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="absolute inset-x-0 top-0 z-50">
+        <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+            <div class="flex lg:flex-1">
+                <a href="../index.html">
+                    <span class="sr-only">Your Company</span>
+                    <img class="h-8 w-auto" src="../images/myntra_logo.webp" alt="">
+                </a>
+            </div>
+            <div class="flex lg:hidden">
+                <button type="button"
+                    class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                    <span class="sr-only">Open main menu</span>
+                </button>
+            </div>
+            <div class="hidden lg:flex lg:gap-x-12 items-center">
+                <a href="./men.html" class="text-sm font-semibold leading-6 text-gray-900 ml-4">MEN</a>
+                <a href="./womans.html" class="text-sm font-semibold leading-6 text-gray-900">WOMAN</a>
+                <a href="./kids.html" class="text-sm font-semibold leading-6 text-gray-900">KIDS</a>
+                <div class="flex items-center">
+                    <a href="./homes.html" class="text-sm font-semibold leading-6 text-gray-900 whitespace-nowrap">HOME
+                        & LIVING</a>
+                </div>
+                <a href="./beauty.html" class="text-sm font-semibold leading-6 text-gray-900">BEAUTY</a>
+                <a href="./cart.html" class="text-sm font-semibold leading-6 text-gray-900"><sup>NEW</sup>STUDIO</a>
+                <div class="search_bar">
+                    <span class="material-symbols-outlined search_icon">search</span>
+                    <input class="search_input" placeholder="Search for products, brands and more">
+                </div>
+                <div class="ml-auto flex gap-x-4 justify-end" style="margin-left:52%">
+                    <div class="action_container">
+                        <span class="material-symbols-outlined action_icon">person</span>
+                        <span class="action_name">Profile</span>
+                    </div>
+                    <div class="action_container">
+                        <span class="material-symbols-outlined action_icon">favorite</span>
+                        <span class="action_name">Wishlist</span>
+                    </div>
+                    <a id="cartLink" class="action_container" href="./cart.html">
+                        <span class="material-symbols-outlined action_icon">shopping_bag</span>
+                        <span class="action_name">Bag</span>
+                        <span id="bagItemCount" class="bag-item-count">0</span>
+                    </a>
+                </div>
+
+            </div>
+
+        </nav>
+
+        <!-- Mobile menu, show/hide based on menu open state. -->
+        <div class="lg:hidden" role="dialog" aria-modal="true">
+            <!-- Background backdrop, show/hide based on slide-over state. -->
+            <div class="fixed inset-0 z-50"></div>
+            <div
+                class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+                <div class="flex items-center justify-between">
+                    <a href="../index.html" class="-m-1.5 p-1.5">
+                        <span class="sr-only">Your Company</span>
+                        <img class="h-8 w-auto" src="../images/myntra_logo.webp" alt="">
+                    </a>
+                    <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">
+                        <span class="sr-only">Close menu</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                            aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="mt-6 flow-root">
+                    <div class="-my-6 divide-y divide-gray-500/10">
+                        <div class="space-y-2 py-6">
+                            <a href="./men.html"
+                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">MEN</a>
+                            <a href="./womans.html"
+                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">WOMAN</a>
+                            <a href="./kids.html"
+                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">KIDS</a>
+                            <a href="./homes.html"
+                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">HOME AND LIVING</a>
+                            <a href="./beauty.html"
+                                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">BEAUTY</a>
+                        </div>
+                        <div class="py-6">
+                            <a href="./cart.html"
+                                class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">STUDIO
+                                <sup>NEW</sup></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- <nav class="navbar">
+        <div class="logo_container">
+            <a href="../index.html"><img class="myntra_home" src="../images/myntra_logo.webp" alt="Myntra Home"></a>
+        </div>
+        <div class="nav_links">
+            <a href="./men.html">Men</a>
+            <a href="./womans.html">Women</a>
+            <a href="./kids.html">Kids</a>
+            <a href="./homes.html">Home & Living</a>
+            <a href="./beauty.html">Beauty</a>
+            <a href="./womans.html">Studio <sup>New</sup></a>
+        </div>
+        <div class="search_bar">
+            <span class="material-symbols-outlined search_icon">search</span>
+            <input class="search_input" placeholder="Search for products, brands and more">
+        </div>
+        <div class="action_bar">
+            <div class="action_container">
+                <span class="material-symbols-outlined action_icon">person</span>
+                <span class="action_name">Profile</span>
+            </div>
+
+            <div class="action_container">
+                <span class="material-symbols-outlined action_icon">favorite</span>
+                <span class="action_name">Wishlist</span>
+            </div>
+
+            <a id="cartLink" class="action_container" href="./cart.html">
+                <span class="material-symbols-outlined action_icon">shopping_bag</span>
+                <span class="action_name">Bag</span>
+                <span id="bagItemCount" class="bag-item-count">0</span>
+            </a>
+        </div>
+    </nav> -->
+
+    <br />
+
+    <h1 id="fixed" style="display: flex; align-items: center; font-size: 40px;">IN CART</h1>
+    <main>
+    </main>
+    <br />
+    <br />
+
+
+
+    <footer>
+        <div class="footer_container">
+            <div class="footer_column">
+                <h3>ONLINE SHOPPING</h3>
+                <a href="./men.html">Men</a>
+                <a href="./womans.html">Women</a>
+                <a href="./kids.html">Kids</a>
+                <a href="./homes.html">Home & Living</a>
+                <a href="./beauty.html">Beauty</a>
+                <a href="../index.html">Gift Card</a>
+                <a href="../index.html">Myntra Insider</a>
+            </div>
+            <div class="footer_column" id="footer_column_2">
+                <h3>ONLINE SHOPPING</h3>
+                <a href="./men.html">Men</a>
+                <a href="./womans.html">Women</a>
+                <a href="./kids.html">Kids</a>
+                <a href="./homes.html">Home & Living</a>
+                <a href="./beauty.html">Beauty</a>
+                <a href="../index.html">Gift Card</a>
+                <a href="../index.html">Myntra Insider</a>
+            </div>
+            <div class="footer_column" id="footer_column_3">
+                <h3>ONLINE SHOPPING</h3>
+                <a href="./men.html">Men</a>
+                <a href="./womans.html">Women</a>
+                <a href="./kids.html">Kids</a>
+                <a href="./homes.html">Home & Living</a>
+                <a href="./beauty.html">Beauty</a>
+                <a href="../index.html">Gift Card</a>
+                <a href="../index.html">Myntra Insider</a>
+            </div>
+        </div>
+        <hr>
+        <div class="copyright">
+            © 2023 www.myntra.com. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Initialize AWS SDK with your credentials
+            AWS.config.update({
+                region: 'us-east-1', // Replace 'YOUR_REGION' with your AWS region
+                accessKeyId: 'AKIAQHEPT6D4SLYP3KV3', // Replace with your AWS access key ID
+                secretAccessKey: '8wvieBpArXwIRVDxu1hn9RUThJEMiIdEHitnIB6m' // Replace with your AWS secret access key
+            });
+
+            // Initialize DynamoDB object
+            var dynamodb = new AWS.DynamoDB();
+
+            // Function to fetch cart items and render them
+            function fetchCartItemsAndRender() {
+                var params = {
+                    TableName: 'Products'
+                };
+
+                dynamodb.scan(params, function (err, data) {
+                    if (err) {
+                        alert("Unable to fetch items. Error JSON:" + JSON.stringify(err, null, 2));
+                    } else {
+                        console.log("Items fetched successfully:", data);
+                        renderCartItems(data.Items);
+                    }
+                });
+            }
+
+            // Function to delete item from DynamoDB
+            function removeItem(productId, mrp) {
+                var params = {
+                    TableName: 'Products',
+                    Key: {
+                        'ProductId': {
+                            S: productId
+                        },
+                    }
+                };
+
+                dynamodb.deleteItem(params, function (err, data) {
+                    if (err) {
+                        console.error("Unable to delete item. Error:", err);
+                    } else {
+                        console.log("Deleted item:", data);
+                        // Update bag item count after successfully deleting the item
+                        updateBagItemCount();
+                    }
+                });
+            }
+
+            // Function to update bag item count
+            function updateBagItemCount() {
+                var params = {
+                    TableName: 'Products',
+                };
+
+                dynamodb.scan(params, function (err, data) {
+                    if (err) {
+                        console.error("Unable to scan the table. Error JSON:", JSON.stringify(err, null, 2));
+                    } else {
+                        var itemCount = data.Count || 0;
+                        document.getElementById('bagItemCount').textContent = itemCount;
+                    }
+                });
+            }
+
+
+            // Function to render cart items in the main tag
+            function renderCartItems(items) {
+                var mainTag = document.querySelector('main');
+                var totalPrice = 0; // Variable to store total price
+
+                mainTag.innerHTML = ''; // Clear previous content
+
+                items.forEach(function (item) {
+                    var productId = item.ProductId.S;
+                    var mrp = parseFloat(item.MRP.N); // Parse MRP to float
+                    var imgSrc = item.ImageSource.S;
+
+                    // Create elements for each cart item
+                    var productDiv = document.createElement('div');
+                    productDiv.classList.add('product');
+
+                    var image = document.createElement('img');
+                    image.setAttribute('src', imgSrc);
+
+                    var Pid = document.createElement('div');
+                    Pid.textContent = "Product Id : " + productId;
+
+                    var mrpDiv = document.createElement('div');
+                    mrpDiv.textContent = "MRP : ₹" + mrp.toFixed(2); // Format MRP to two decimal places
+                    totalPrice += mrp; // Add MRP to total price
+
+                    // Create remove button
+                    var removeButton = document.createElement('button');
+                    removeButton.textContent = "REMOVE";
+                    removeButton.classList.add('button-24');
+                    removeButton.setAttribute('role', 'button');
+                    removeButton.addEventListener('click', function () {
+                        // Function to remove the item from the table
+                        removeItem(productId);
+                        // Re-render the cart items after removal
+                        fetchCartItemsAndRender();
+                    });
+
+                    productDiv.appendChild(image);
+                    productDiv.appendChild(Pid);
+                    productDiv.appendChild(mrpDiv);
+                    productDiv.appendChild(removeButton);
+                    mainTag.appendChild(productDiv);
+                });
+
+                // Create total price tag
+                var totalPriceTag = document.createElement('div');
+                totalPriceTag.textContent = "Total Price: ₹" + totalPrice.toFixed(2);
+                mainTag.appendChild(totalPriceTag);
+            }
+
+            // Function to toggle mobile menu visibility
+            function toggleMobileMenu() {
+                var mobileMenu = document.querySelector('.lg\\:hidden[role="dialog"]');
+                mobileMenu.classList.toggle('hidden');
+
+                // Toggle visibility of open menu button
+                var openMenuButton = document.querySelector('.lg\\:flex[role="button"]');
+                openMenuButton.classList.toggle('hidden');
+            }
+
+            // Add event listener to the cross button in mobile view navbar
+            var crossButton = document.querySelector('.lg\\:hidden[role="dialog"] button');
+            crossButton.addEventListener('click', toggleMobileMenu);
+
+            // Call the function to fetch cart items and render them
+            fetchCartItemsAndRender();
+
+            // Call updateBagItemCount initially to set the count
+            updateBagItemCount();
+        });
+
+    </script>
+
+
+</body>
+
+</html>

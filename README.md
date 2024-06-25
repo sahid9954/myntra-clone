@@ -1,1 +1,1 @@
-# myntra-clone
+# myntraclone
